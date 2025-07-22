@@ -1,25 +1,20 @@
-#!/usr/bin/env python3
-
-from random import choice as rc
-
-from app import app
 from models import db, Bakery, BakedGood
+from app import app
 
 with app.app_context():
-
-    BakedGood.query.delete()
     Bakery.query.delete()
-    
-    bakeries = []
-    bakeries.append(Bakery(name='Delightful donuts'));
-    bakeries.append(Bakery(name='Incredible crullers'));
-    db.session.add_all(bakeries)
+    BakedGood.query.delete()
 
-    baked_goods = []
-    baked_goods.append(BakedGood(name='Chocolate dipped donut', price=2.75, bakery=bakeries[0]));
-    baked_goods.append(BakedGood(name='Apple-spice filled donut', price=3.50, bakery=bakeries[0]));
-    baked_goods.append(BakedGood(name='Glazed honey cruller', price=3.25, bakery=bakeries[1]));
-    baked_goods.append(BakedGood(name='Chocolate cruller', price=3.40, bakery=bakeries[1]));
+    b1 = Bakery(name="Delightful donuts")
+    b2 = Bakery(name="Incredible crullers")
 
-    db.session.add_all(baked_goods)
+    db.session.add_all([b1, b2])
+    db.session.commit()
+
+    g1 = BakedGood(name="Chocolate dipped donut", price=2.75, bakery_id=b1.id)
+    g2 = BakedGood(name="Apple-spice filled donut", price=3.5, bakery_id=b1.id)
+    g3 = BakedGood(name="Glazed honey cruller", price=3.25, bakery_id=b2.id)
+    g4 = BakedGood(name="Chocolate cruller", price=100.0, bakery_id=b2.id)
+
+    db.session.add_all([g1, g2, g3, g4])
     db.session.commit()
